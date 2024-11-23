@@ -8,10 +8,10 @@ __pycache__/
 .env
 
 # Menu pictures
-menu_pictures/
+menu_pictures/*
 
 # Output
-output/
+output/*
 
 # Logs
 app.log
