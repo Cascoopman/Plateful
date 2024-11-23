@@ -5,7 +5,7 @@ import os
 import json
 import logging
 
-from models.dish import Dish
+from src.models.menu import Menu, Dish
 from utils.openrouter import openrouter_vlm
 
 logging.basicConfig(
@@ -22,9 +22,10 @@ def read_image_to_str(file_name: str) -> str:
     """
     Read an image from the menu_pictures folder into a base64 format
     """
+
     file_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), f"menu_pictures/{file_name}"
-        )
+        os.path.dirname(os.path.abspath(__file__)), "../../menu_pictures", file_name
+    )
 
     with open(file_path, "rb") as image_file:
         encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
@@ -95,7 +96,23 @@ def extract_json_from_response(output: str) -> dict:
     return dishes_dict
 
 
-def extract_dishes_from_menu(file_name: str) -> list[Dish]:
+def dishes_dict_to_menu(dishes_dict) -> Menu:
+    """
+    This function converts a dictionary of dishes to a list of Dish objects
+    """
+    dishes_list = []
+    for name, values in dishes_dict.items():
+        dish = Dish(
+            name=name,
+            ingredients=values.get("ingredients"),
+            price=values.get("price"),
+            description=values.get("description")
+        )
+        dishes_list.append(dish)
+    return Menu(dishes_list)
+
+
+def extract_menu_from_image(file_name: str) -> Menu:
     """
     This function takes a picture of a menu and extracts dishes.
     Dishes are the items that can be bought and usually have a name, ingredients
@@ -108,23 +125,13 @@ def extract_dishes_from_menu(file_name: str) -> list[Dish]:
 
     dishes_dict = extract_json_from_response(response)
 
-    dishes_list = []
-    for name, values in dishes_dict.items():
-        dish = Dish(
-            name,
-            values.get("ingredients"),
-            values.get("price"),
-            values.get("description"),
-            )
-        dishes_list.append(dish)
-
-    return dishes_list
+    return dishes_dict_to_menu(dishes_dict)
 
 
 if __name__ == "__main__":
 
     FILE_NAME = "menu_image_pizza.jpg"
 
-    dishes = extract_dishes_from_menu(FILE_NAME)
+    menu = extract_menu_from_image(FILE_NAME)
 
-    logging.info(dishes)
+    logging.info(menu)
