@@ -1,5 +1,14 @@
 # Virtual environments
 .venv
 
+# Pycache
+__pycache__/
+
 # Environment variables
 .env
+
+# Menu pictures
+/menu_pictures
+
+# Logs
+app.log
