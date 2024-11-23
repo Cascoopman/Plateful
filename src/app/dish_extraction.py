@@ -8,14 +8,7 @@ import logging
 from src.models.menu import Menu, Dish
 from utils.openrouter import openrouter_vlm
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.FileHandler("app.log"),
-        logging.StreamHandler()
-    ]
-)
+logging.basicConfig(level=logging.DEBUG)
 
 
 def read_image_to_str(file_name: str) -> str:
@@ -24,7 +17,7 @@ def read_image_to_str(file_name: str) -> str:
     """
 
     file_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "../../menu_pictures", file_name
+        os.path.dirname(os.path.abspath(__file__)), "../../menu_pictures", file_name + ".jpg"
     )
 
     with open(file_path, "rb") as image_file:
@@ -96,11 +89,12 @@ def extract_json_from_response(output: str) -> dict:
     return dishes_dict
 
 
-def dishes_dict_to_menu(dishes_dict) -> Menu:
+def dishes_dict_to_menu(file_name, dishes_dict) -> Menu:
     """
     This function converts a dictionary of dishes to a list of Dish objects
     """
-    dishes_list = []
+    menu = Menu(file_name)
+
     for name, values in dishes_dict.items():
         dish = Dish(
             name=name,
@@ -108,8 +102,9 @@ def dishes_dict_to_menu(dishes_dict) -> Menu:
             price=values.get("price"),
             description=values.get("description")
         )
-        dishes_list.append(dish)
-    return Menu(dishes_list)
+        menu.add_dish(dish)
+
+    return menu
 
 
 def extract_menu_from_image(file_name: str) -> Menu:
@@ -125,13 +120,17 @@ def extract_menu_from_image(file_name: str) -> Menu:
 
     dishes_dict = extract_json_from_response(response)
 
-    return dishes_dict_to_menu(dishes_dict)
+    return dishes_dict_to_menu(file_name, dishes_dict)
 
 
 if __name__ == "__main__":
+    import pickle
 
-    FILE_NAME = "menu_image_pizza.jpg"
+    FILE_NAME = "menu_image_pizza"
 
-    menu = extract_menu_from_image(FILE_NAME)
+    test_menu = extract_menu_from_image(FILE_NAME)
 
-    logging.info(menu)
+    with open("tests/test_menu.pkl", "wb") as f:
+        pickle.dump(test_menu, f)
+
+    logging.debug(test_menu)

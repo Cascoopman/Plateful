@@ -1,5 +1,7 @@
 from src.app.dish_extraction import dishes_dict_to_menu
 
+FILE_NAME = "menu_image_pizza"
+
 TEST_MENU_JSON = {
     "Fatto Tiramisu": {
         "name": "Fatto Tiramisu",
@@ -47,4 +49,4 @@ TEST_MENU_JSON = {
     }
 }
 
-TEST_MENU = dishes_dict_to_menu(TEST_MENU_JSON)
+TEST_MENU = dishes_dict_to_menu(FILE_NAME, TEST_MENU_JSON)

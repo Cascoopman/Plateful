@@ -1,9 +1,7 @@
-transformers
-qwen-vl-utils
-torch
-torchvision
-accelerate>=0.26.0
-openai
 python-dotenv
+openai
 easyocr
 fuzzywuzzy
+matplotlib
+python-Levenshtein
+reportlab

@@ -20,3 +20,8 @@ python src/main.py
 ```
 
 Enjoy the visual feast!
+
+Backlog:
+- Cloud deployment (app engine?)
+- Better visualization?
+- Streamlit frontend?
