@@ -1,3 +1,5 @@
+"""This module provides functionality to extract dish information from a menu image."""
+
 import base64
 import os
 import json
