@@ -3,7 +3,7 @@ import os
 import json
 import logging
 
-from dish import Dish
+from models.dish import Dish
 from utils.openrouter import openrouter_vlm
 
 logging.basicConfig(
