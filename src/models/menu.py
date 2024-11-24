@@ -84,6 +84,11 @@ class Menu():
             del self.dish_locations[dish_id]
 
     def get_dish_by_id(self, dish_id):
+        if not isinstance(dish_id, uuid.UUID):
+            try:
+                dish_id = uuid.UUID(dish_id)
+            except ValueError:
+                return None
         for dish in self.dishes:
             if dish.id == dish_id:
                 return dish

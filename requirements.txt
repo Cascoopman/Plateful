@@ -5,3 +5,4 @@ fuzzywuzzy
 matplotlib
 python-Levenshtein
 reportlab
+flask

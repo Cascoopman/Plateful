@@ -1,4 +1,4 @@
-"""This module provides functionality to visualize all the dishes."""
+"""This module provides functionality to visualize all the dishes through a clickable pdf."""
 
 import logging
 import pickle
